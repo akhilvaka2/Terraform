@@ -10,13 +10,6 @@ variable "mypublickey"{
 type = string
 }
 
-variable "jenkins_count"{
-type = string
-}
-
-variable "artifactory_count"{
-type = string
-}
 
 variable "webapp_count"{
 type = string
@@ -107,32 +100,6 @@ resource "aws_key_pair" "mykp" {
 }
 
 ###############  Computing ############
-resource "aws_instance" "jenkins" {
-  count = var.jenkins_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.large"
-  tags = {
-    Name = "jenkins-server"
-  }
-}
-
-resource "aws_instance" "artifactory" {
-  count = var.artifactory_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.large"
-  tags = {
-    Name = "artifactory-server"
-  }
-}
-
 resource "aws_instance" "webapp" {
   count = var.webapp_count
   ami           = var.myami
