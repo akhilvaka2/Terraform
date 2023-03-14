@@ -22,14 +22,6 @@ variable "webapp_count"{
 type = string
 }
 
-variable "haproxy_count"{
-type = string
-}
-
-variable "gunicorn_count"{
-type = string
-}
-
 ################ Authentication ##########33
 provider "aws" {
     region = var.myregion
@@ -151,32 +143,6 @@ resource "aws_instance" "webapp" {
   instance_type = "t2.large"
   tags = {
     Name = "webapp-server"
-  }
-}
- 
- resource "aws_instance" "haproxy" {
-  count = var.haproxy_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.large"
-  tags = {
-    Name = "haproxy-server"
-  }
-}
- 
- resource "aws_instance" "gunicorn" {
-  count = var.gunicorn_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.large"
-  tags = {
-    Name = "gunicorn-server"
   }
 }
  
