@@ -10,21 +10,7 @@ variable "mypublickey"{
 type = string
 }
 
-variable "jenkins_count"{
-type = string
-}
-
-variable "artifactory_count"{
-type = string
-}
-
-
-
-variable "haproxy_count"{
-type = string
-}
-
-variable "gunicorn_count"{
+variable "cicd_count"{
 type = string
 }
 
@@ -35,17 +21,17 @@ provider "aws" {
 
 #########  Networking ##############
 # Step 1
-resource "aws_vpc" "myvpc" {
+resource "aws_vpc" "jenkinsvpc" {
     cidr_block = "10.0.0.0/16"
     tags = {
-      "Name" = "myvpc"
+      "Name" = "jenkinsvpc"
     }
 
 }
 
 # Step 2
 resource "aws_internet_gateway" "myigw" {
-  vpc_id = aws_vpc.myvpc.id
+  vpc_id = aws_vpc.jenkinsvpc.id
   tags = {
     Name = "myigw"
   }
@@ -53,7 +39,7 @@ resource "aws_internet_gateway" "myigw" {
  
 # Step 3
 resource "aws_subnet" "mysubnet" {
-  vpc_id     = aws_vpc.myvpc.id
+  vpc_id     = aws_vpc.jenkinsvpc.id
   cidr_block = "10.0.0.0/24"
 
   tags = {
@@ -63,7 +49,7 @@ resource "aws_subnet" "mysubnet" {
 
 # Step 4
 resource "aws_route_table" "myrtb" {
-vpc_id = "${aws_vpc.myvpc.id}"
+vpc_id = "${aws_vpc.jenkinsvpc.id}"
  route {
  cidr_block = "0.0.0.0/0"
  gateway_id = "${aws_internet_gateway.myigw.id}"
@@ -113,8 +99,8 @@ resource "aws_key_pair" "mykp" {
 }
 
 ###############  Computing ############
-resource "aws_instance" "jenkins" {
-  count = var.jenkins_count
+resource "aws_instance" "cicd" {
+  count = var.cicd_count
   ami           = var.myami
   associate_public_ip_address = "true"
   vpc_security_group_ids = [aws_security_group.mysg.id]
@@ -122,47 +108,10 @@ resource "aws_instance" "jenkins" {
   subnet_id = aws_subnet.mysubnet.id
   instance_type = "t2.micro"
   tags = {
-    Name = "jenkins-server"
-  }
-}
-
-resource "aws_instance" "artifactory" {
-  count = var.artifactory_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.large"
-  tags = {
-    Name = "artifactory-server"
+    Name = "cicd-server"
   }
 }
 
 
- resource "aws_instance" "haproxy" {
-  count = var.haproxy_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.large"
-  tags = {
-    Name = "haproxy-server"
-  }
-}
- 
- resource "aws_instance" "gunicorn" {
-  count = var.gunicorn_count
-  ami           = var.myami
-  associate_public_ip_address = "true"
-  vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp"
-  subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.large"
-  tags = {
-    Name = "gunicorn-server"
-  }
-}
+
  
