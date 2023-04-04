@@ -10,10 +10,13 @@ variable "mypublickey"{
 type = string
 }
 
-variable "cicd_count"{
+variable "gunicorn_count"{
 type = string
 }
 
+variable "haproxy_count"{
+type = string
+}
 ################ Authentication ##########33
 provider "aws" {
     region = var.myregion
@@ -21,17 +24,17 @@ provider "aws" {
 
 #########  Networking ##############
 # Step 1
-resource "aws_vpc" "jenkinsvpc" {
+resource "aws_vpc" "webappvpc" {
     cidr_block = "10.0.0.0/16"
     tags = {
-      "Name" = "jenkinsvpc"
+      "Name" = "webappvpc"
     }
 
 }
 
 # Step 2
 resource "aws_internet_gateway" "myigw" {
-  vpc_id = aws_vpc.jenkinsvpc.id
+  vpc_id = aws_vpc.webappvpc.id
   tags = {
     Name = "myigw"
   }
@@ -39,7 +42,7 @@ resource "aws_internet_gateway" "myigw" {
  
 # Step 3
 resource "aws_subnet" "mysubnet" {
-  vpc_id     = aws_vpc.jenkinsvpc.id
+  vpc_id     = aws_vpc.webappvpc.id
   cidr_block = "10.0.0.0/24"
 
   tags = {
@@ -49,7 +52,7 @@ resource "aws_subnet" "mysubnet" {
 
 # Step 4
 resource "aws_route_table" "myrtb" {
-vpc_id = "${aws_vpc.jenkinsvpc.id}"
+vpc_id = "${aws_vpc.webappvpc.id}"
  route {
  cidr_block = "0.0.0.0/0"
  gateway_id = "${aws_internet_gateway.myigw.id}"
@@ -70,7 +73,7 @@ resource "aws_route_table_association" "myrtba" {
 resource "aws_security_group" "mysg" {
   name        = "mysg"
   description = "Allow all traffic"
-  vpc_id      = aws_vpc.myvpc.id
+  vpc_id      = aws_vpc.webappvpc.id
 
   ingress {
     from_port        = 0
@@ -99,8 +102,8 @@ resource "aws_key_pair" "mykp" {
 }
 
 ###############  Computing ############
-resource "aws_instance" "cicd" {
-  count = var.cicd_count
+resource "aws_instance" "gunicorn_count" {
+  count = var.gunicorn_count
   ami           = var.myami
   associate_public_ip_address = "true"
   vpc_security_group_ids = [aws_security_group.mysg.id]
@@ -108,10 +111,21 @@ resource "aws_instance" "cicd" {
   subnet_id = aws_subnet.mysubnet.id
   instance_type = "t2.micro"
   tags = {
-    Name = "cicd-server"
+    Name = "gunicorn_count"
   }
 }
 
 
-
+resource "aws_instance" "haproxy_count" {
+  count = var.haproxy_count
+  ami           = var.myami
+  associate_public_ip_address = "true"
+  vpc_security_group_ids = [aws_security_group.mysg.id]
+  key_name = "mykp"
+  subnet_id = aws_subnet.mysubnet.id
+  instance_type = "t2.micro"
+  tags = {
+    Name = "haproxy_count"
+  }
+}
  
