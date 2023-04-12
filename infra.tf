@@ -81,7 +81,7 @@ resource "aws_route_table_association" "myrtba" {
 resource "aws_security_group" "mysg" {
   name        = "mysg"
   description = "Allow all traffic"
-  vpc_id      = aws_vpc.webappvpc.id
+  vpc_id      = aws_vpc.cicdvpc.id
 
   ingress {
     from_port        = 0
