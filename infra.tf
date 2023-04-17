@@ -32,17 +32,17 @@ provider "aws" {
 
 #########  Networking ##############
 # Step 1
-resource "aws_vpc" "cicdvpc" {
+resource "aws_vpc" "webappvpc" {
     cidr_block = "10.0.0.0/16"
     tags = {
-      "Name" = "cicdvpc"
+      "Name" = "webappvpc"
     }
 
 }
 
 # Step 2
 resource "aws_internet_gateway" "myigw" {
-  vpc_id = aws_vpc.cicdvpc.id
+  vpc_id = aws_vpc.webappvpc.id
   tags = {
     Name = "myigw"
   }
@@ -50,7 +50,7 @@ resource "aws_internet_gateway" "myigw" {
  
 # Step 3
 resource "aws_subnet" "mysubnet" {
-  vpc_id     = aws_vpc.cicdvpc.id
+  vpc_id     = aws_vpc.webappvpc.id
   cidr_block = "10.0.0.0/24"
 
   tags = {
@@ -60,7 +60,7 @@ resource "aws_subnet" "mysubnet" {
 
 # Step 4
 resource "aws_route_table" "myrtb" {
-vpc_id = "${aws_vpc.cicdvpc.id}"
+vpc_id = "${aws_vpc.webappvpc.id}"
  route {
  cidr_block = "0.0.0.0/0"
  gateway_id = "${aws_internet_gateway.myigw.id}"
@@ -81,7 +81,7 @@ resource "aws_route_table_association" "myrtba" {
 resource "aws_security_group" "mysg" {
   name        = "mysg"
   description = "Allow all traffic"
-  vpc_id      = aws_vpc.cicdvpc.id
+  vpc_id      = aws_vpc.webappvpc.id
 
   ingress {
     from_port        = 0
@@ -104,8 +104,8 @@ resource "aws_security_group" "mysg" {
 }
 
 # Step 2
-resource "aws_key_pair" "mykp2" {
-  key_name   = "mykp2"
+resource "aws_key_pair" "mykp" {
+  key_name   = "mykp"
   public_key = var.mypublickey
 }
 
@@ -115,7 +115,7 @@ resource "aws_instance" "gunicorn_count" {
   ami           = var.myami
   associate_public_ip_address = "true"
   vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp2"
+  key_name = "mykp"
   subnet_id = aws_subnet.mysubnet.id
   instance_type = "t2.micro"
   tags = {
@@ -129,7 +129,7 @@ resource "aws_instance" "haproxy_count" {
   ami           = var.myami
   associate_public_ip_address = "true"
   vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp2"
+  key_name = "mykp"
   subnet_id = aws_subnet.mysubnet.id
   instance_type = "t2.micro"
   tags = {
@@ -142,7 +142,7 @@ resource "aws_instance" "jenkins_count" {
   ami           = var.myami
   associate_public_ip_address = "true"
   vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp2"
+  key_name = "mykp"
   subnet_id = aws_subnet.mysubnet.id
   instance_type = "t2.micro"
   tags = {
@@ -155,7 +155,7 @@ resource "aws_instance" "artifactory_count" {
   ami           = var.myami
   associate_public_ip_address = "true"
   vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp2"
+  key_name = "mykp"
   subnet_id = aws_subnet.mysubnet.id
   instance_type = "t2.micro"
   tags = {
