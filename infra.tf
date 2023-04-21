@@ -117,7 +117,7 @@ resource "aws_instance" "gunicorn_count" {
   vpc_security_group_ids = [aws_security_group.mysg.id]
   key_name = "mykp"
   subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   tags = {
     Name = "gunicorn_count"
   }
@@ -157,7 +157,7 @@ resource "aws_instance" "artifactory_count" {
   vpc_security_group_ids = [aws_security_group.mysg.id]
   key_name = "mykp"
   subnet_id = aws_subnet.mysubnet.id
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   tags = {
     Name = "artifactory_count"
   }
