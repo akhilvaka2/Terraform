@@ -49,12 +49,12 @@ resource "aws_internet_gateway" "myigw" {
 }
  
 # Step 3
-resource "aws_subnet" "mysubnet" {
+resource "aws_subnet" "mysubnt" {
   vpc_id     = aws_vpc.webappvpc.id
   cidr_block = "10.0.0.0/24"
 
   tags = {
-    Name = "mysubnet"
+    Name = "mysubnt"
   }
 }
 
