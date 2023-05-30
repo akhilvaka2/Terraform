@@ -25,6 +25,10 @@ type = string
 variable "haproxy_count"{
 type = string
 }
+variable "sql_count"{
+type = string
+}
+
 ################ Authentication ##########33
 provider "aws" {
     region = var.myregion
@@ -49,12 +53,12 @@ resource "aws_internet_gateway" "myigw" {
 }
  
 # Step 3
-resource "aws_subnet" "mysubnt" {
+resource "aws_subnet" "mysubnet" {
   vpc_id     = aws_vpc.webappvpc.id
   cidr_block = "10.0.0.0/24"
 
   tags = {
-    Name = "mysubnt"
+    Name = "mysubnet"
   }
 }
 
@@ -71,7 +75,7 @@ vpc_id = "${aws_vpc.webappvpc.id}"
 }
 
 # Step 5
-resource "aws_route_table_association" "myrtba" {
+resource "aws_route_table_association" "myrtb" {
  subnet_id = aws_subnet.mysubnet.id
  route_table_id = aws_route_table.myrtb.id
 }
@@ -120,6 +124,18 @@ resource "aws_instance" "gunicorn_count" {
   instance_type = "t2.medium"
   tags = {
     Name = "gunicorn_count"
+  }
+}
+resource "aws_instance" "sql_count" {
+  count = var.sql_count
+  ami           = var.myami
+  associate_public_ip_address = "true"
+  vpc_security_group_ids = [aws_security_group.mysg.id]
+  key_name = "mykp"
+  subnet_id = aws_subnet.mysubnet.id
+  instance_type = "t2.medium"
+  tags = {
+    Name = "sql_count"
   }
 }
 

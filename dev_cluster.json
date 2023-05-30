@@ -1,10 +1,11 @@
 { 
-    "myregion" : "us-west-2",
-    "myami": "ami-08c191625cfb7ee61",
-    "mypublickey" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC44/7UP9G9z+SJw7mqmlYVXSe73wLcPXJLKfiuo8PIvcjMWAKdQ0/qGoNjFqvZhnSAhNVaLXxa5NisTT5Sh9zVbafWPLPP7AlchJ1Zod9+Jd1Biw22l1dIxPR7iGqcJpj5jpZ4WIkNsZE+bgUxVojo/qOXrxJFjRirZWctQQemPau4uUfjqtOJoeHM4MAfaxzo88SSYAUmbj2hOztvJfAaR137WKCvQMZ97j4B3wAqAh3ABUDWEvLwcgnUK2ozEq5DfvxORMzV7IrZdWlrKDwZhD4O2INkfGLed/3rrHSD5wIBie/OnQnYBiw24jJu8SXlgKEBc3ZrIfKe+jw1MHZMXU6sza15e1F3HhqOvZoymu0mKdhIEZU9IgEjM8TNTTcp+uRbcIRh/rBquNzXTggx79fB/GiBlfQaJ9gej8w9AZV2SXPwf/PXYFx1iQsBIpQ3nqjhWhJr9SwWhEdfZ8UZW7C+sCB0u0rvmxG5UQORykg0T800sCqP1dDn9vjt2V8= akhil@akhilkumar",
+    "myregion" : "us-east-1",
+    "myami": "ami-002070d43b0a4f171",
+    "mypublickey" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCb+GzWQbji6PbcNmO609szfRRvlm9CzNNfgvuGKK2O8YQNaMJyS7rPisaUJR3abj9fMrPi1b03I0nzqgrKaw6PD9w+stBa92hIKtfFHYHRXLZvuk+AxAAHJxwt/BGeV91MNumhYz8NHvLfaacZgk6BM6vql5h0kE/WKq0vn5gZn6cr2KYYl7Zlab2P5U3yZlrH06+mk/cfRN9dF0L2SYZh59/SdBmGPQ+8VB4brk2ncOeASKJqHlvXmRvQhsFIwfJ5e3En8BbZU9K8J91LR73lLq+Kn4nC8cYValO9Yu8W0vh2X3/kq48Wq6y1/OyTPvLp6jDWz9zjKW0Dzub023+xC2EIrIs4uvfLlZ4qFt8h/sr3LbBsH4lDzg+UuAkm5JtRgWkvsSLF32j46X14jNRjVfkbNvyn7iUfxNdgtMZyidadL/S6YI/T4fUVi2yLzRQ3CWnsQjez9JgVwNPTzPdnaTyRsZWmFLsG0yX3fXc2qyA/n5WBInb+Yd3MpJpgDy8= akhil@akhilkumar",
     "jenkins_count": 0,
     "artifactory_count": 0,
-    "haproxy_count": 1,
-    "gunicorn_count": 1
+    "haproxy_count": 0,
+    "gunicorn_count": 0,
+    "sql_count": 1
 
 }
