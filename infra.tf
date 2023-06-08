@@ -108,8 +108,8 @@ resource "aws_security_group" "mysg" {
 }
 
 # Step 2
-resource "aws_key_pair" "mykp" {
-  key_name   = "mykp"
+resource "aws_key_pair" "myk" {
+  key_name   = "myk"
   public_key = var.mypublickey
 }
 
@@ -135,7 +135,7 @@ resource "aws_instance" "sql_count" {
   subnet_id = aws_subnet.mysubnet.id
   instance_type = "t2.medium"
   tags = {
-    Name = "sql_count"
+    Name = "mysql-server"
   }
 }
 
