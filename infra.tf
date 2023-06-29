@@ -131,7 +131,7 @@ resource "aws_instance" "sql_count" {
   ami           = var.myami
   associate_public_ip_address = "true"
   vpc_security_group_ids = [aws_security_group.mysg.id]
-  key_name = "mykp"
+  key_name = "myk"
   subnet_id = aws_subnet.mysubnet.id
   instance_type = "t2.medium"
   tags = {
